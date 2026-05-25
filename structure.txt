@@ -12,7 +12,7 @@ drawStimuli(size, position[], shape)
     
     size - długość boku figury
     postition[] - pozycja figury prawo-lewo, góra-dół (1/-1, 1/-1)
-    shape - kształt wigury do narysowania ('square'/'diamond')
+    shape - kształt figury do narysowania ('square'/'diamond')
 
 dynamicFix()
     wyświetla dynamiczne wspomaganie fiksacji
