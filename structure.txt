@@ -1,0 +1,39 @@
+prepareData() -> (targetShape, trials[])
+    losuje kształt którego pozycję badany będzie miał określać oraz treść wszystkich prób
+
+    targetShape - wylosowany kształt ('square'/'diamond')
+    trials[] - listę informacji do pojedyńczych traili o strukturze (position, primes[], targetDistractor[]) gdzie:
+        position - gdzie bodźce będą wyświetlane (up/down)
+        primes[] - para kształtów prymów ('square'/'diamond', 'square'/'diamond')
+        targetDistractor[] - para kształtów celu i dystraktora ('square'/'diamond', 'square'/'diamond')
+
+drawStimuli(size, position[], shape)
+    rysuje figurę o wskazanym kształcie i rozmiarze we wskazanym miejscu
+    
+    size - długość boku figury
+    postition[] - pozycja figury prawo-lewo, góra-dół (1/-1, 1/-1)
+    shape - kształt wigury do narysowania ('square'/'diamond')
+
+dynamicFix()
+    wyświetla dynamiczne wspomaganie fiksacji
+
+trail(target, trailInfo[]) -> {'rt': rt, 'isCorrect': isCorrect}
+    przeprowadza pojedyńczy trial od dynamicznego wpomagania fiksacji po naciśnięcie klawisza wyboru
+
+    target - kształt którego pozycja ma zostać wskazana
+    trialInfo[] - zetaw informacji o trailu, jak pojedyńczy element trials[] wyżej
+    rt - czas reakcji liczony od wyświetlenia targetu po naciśnięcie klawisza
+    isCorrect - informacja czy wciśnięty klawisz odpowiada pozycji targetu (True/False)
+
+runInstructions()
+    wyświetla instrukcję do ekspertymentu
+
+runExercise()
+    przeprowadza ćwiczenia dla badanego
+
+main
+    przyjmuje informacje o badanym
+    losuje wszystkie próby
+    prezentuje instrukcję i przeprwoadza ćwiczenia
+    przeprowadza przewidzianą liczbę traili zapamiętując wyniki
+    zapisuje wyniki z eksperymentu do zewnętrznego pliku
