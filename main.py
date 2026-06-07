@@ -48,6 +48,19 @@ def trial(target, trial_info, is_training = False):
             return True, pressed[-1].rt
         else:
             return False, pressed[-1].rt
+            
+def run_exercise(target):
+    info = visual.TextStim(win, text='', color=config['stimuli_color'], height=config['stimuli_size']*3)
+    
+    for exercise in range(config['number_of_exercises']):
+        is_correct, _x = trial(target, (random.choice((-1,1)), (random.choice(('square','diamond')), random.choice(('square','diamond'))), random.choice((('square','diamond'), ('diamond', 'square')))), True)
+        info.setText({True: 'Dobrze', False: 'Źle'}[is_correct])
+        info.draw()
+        win.callOnFlip(kb.clearEvents)
+        win.callOnFlip(kb.clock.reset)
+        win.flip()
+        while kb.device.clock.getTime() < config['between_trail_time'] - fr_det:
+            continue
 
 myDlg = gui.Dlg(title='')
 myDlg.addText('Subject info:')
