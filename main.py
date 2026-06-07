@@ -1,17 +1,9 @@
-from psychopy import visual, core
+from psychopy import visual, gui
 from psychopy.hardware import keyboard
 import random, numpy as np
 from src.procedure_io import load_config
 
 config = load_config()
-win = visual.Window(color = config['window_color'], fullscr=False, checkTiming=False, units='pix')
-kb = keyboard.Keyboard()
-
-win.callOnFlip(kb.clearEvents)
-win.callOnFlip(kb.clock.reset)
-win.flip()
-win.flip()
-fr_det = kb.device.clock.getTime()
 
 def prepare_data():
     target_shape = random.choice(('square','diamond'))
@@ -56,3 +48,18 @@ def trial(target, trial_info, is_training = False):
             return True, pressed[-1].rt
         else:
             return False, pressed[-1].rt
+
+myDlg = gui.Dlg(title='')
+myDlg.addText('Subject info:')
+myDlg.addField('sub_id', '')
+myDlg.addField('sub_sex', choices=['Male', 'Female', 'Other'])
+myDlg.addField('sub_age', 20)
+gui_data = myDlg.show()
+
+win = visual.Window(color = config['window_color'], fullscr=False, checkTiming=False, units='pix')
+kb = keyboard.Keyboard()
+win.callOnFlip(kb.clearEvents)
+win.callOnFlip(kb.clock.reset)
+win.flip()
+win.flip()
+fr_det = kb.device.clock.getTime()
