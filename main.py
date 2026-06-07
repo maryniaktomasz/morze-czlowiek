@@ -28,11 +28,11 @@ def draw_stimuli(size, position_x, position_y, shape):
     in_rec1.draw()
     in_rec2.draw()
 
-def trial(target, trail_info, is_training = False):
+def trial(target, trial_info, is_training = False):
         # dynamic_fix()
         if not is_training:
-            draw_stimuli(config['stimuli_size']*0.8,'left', trail_info[0], trail_info[1][0])
-            draw_stimuli(config['stimuli_size']*0.8,'right', trail_info[0], trail_info[1][1])
+            draw_stimuli(config['stimuli_size']*0.8,'left', trial_info[0], trial_info[1][0])
+            draw_stimuli(config['stimuli_size']*0.8,'right', trial_info[0], trial_info[1][1])
             win.callOnFlip(kb.clearEvents)
             win.callOnFlip(kb.clock.reset)
             win.flip()
@@ -41,8 +41,8 @@ def trial(target, trail_info, is_training = False):
             win.callOnFlip(kb.clearEvents)
             win.callOnFlip(kb.clock.reset)
             win.flip()
-        draw_stimuli(config['stimuli_size'], 'left', trail_info[0], trail_info[2][0])
-        draw_stimuli(config['stimuli_size'], 'right', trail_info[0], trail_info[2][1])
+        draw_stimuli(config['stimuli_size'], 'left', trial_info[0], trial_info[2][0])
+        draw_stimuli(config['stimuli_size'], 'right', trial_info[0], trial_info[2][1])
         while kb.device.clock.getTime() < config['isi_time'] - fr_det:
             continue
         win.callOnFlip(kb.clearEvents)
@@ -52,7 +52,7 @@ def trial(target, trail_info, is_training = False):
         win.flip()
         kb.waitKeys(keyList= (config['left_key'],config['right_key']), clear=False)
         pressed = kb.getKeys()
-        if trail_info[2][{config['left_key']: 0, config['right_key']: 1}[pressed[-1].value]] == target:
+        if trial_info[2][{config['left_key']: 0, config['right_key']: 1}[pressed[-1].value]] == target:
             return True, pressed[-1].rt
         else:
             return False, pressed[-1].rt
