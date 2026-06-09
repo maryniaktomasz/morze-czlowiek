@@ -14,7 +14,7 @@ def prepare_data():
             (random.choice(('square', 'diamond')), random.choice(('square', 'diamond'))),
             random.choice((('square', 'diamond'), ('diamond', 'square')))
         )
-        for i in range(360)
+        for i in range(config['number_of_trials'])
     )
     return target_shape, trials
 
