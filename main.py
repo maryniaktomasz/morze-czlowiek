@@ -14,7 +14,7 @@ def prepare_data():
             (random.choice(('square', 'diamond')), random.choice(('square', 'diamond'))),
             random.choice((('square', 'diamond'), ('diamond', 'square')))
         )
-        for i in range(config['number_of_trials'])
+        for i in range(20)
     )
     return target_shape, trials
 
@@ -38,14 +38,14 @@ def trial(target, trial_info, is_training=False):
         win.callOnFlip(kb.clearEvents)
         win.callOnFlip(kb.clock.reset)
         win.flip()
-        while kb.device.clock.getTime() < config['prime_time'] - fr_det:
+        while kb.clock.getTime() < config['prime_time'] - fr_det:
             continue
         win.callOnFlip(kb.clearEvents)
         win.callOnFlip(kb.clock.reset)
         win.flip()
     draw_stimuli(config['stimuli_size'], 'left',  trial_info[0], trial_info[2][0])
     draw_stimuli(config['stimuli_size'], 'right', trial_info[0], trial_info[2][1])
-    while kb.device.clock.getTime() < config['isi_time'] - fr_det:
+    while kb.clock.getTime() < config['isi_time'] - fr_det:
         continue
     win.callOnFlip(kb.clearEvents)
     win.callOnFlip(kb.clock.reset)
@@ -70,7 +70,7 @@ def run_exercise(target):
         win.callOnFlip(kb.clearEvents)
         win.callOnFlip(kb.clock.reset)
         win.flip()
-        while kb.device.clock.getTime() < config['between_trial_time'] - fr_det:
+        while kb.clock.getTime() < config['between_trial_time'] - fr_det:
             continue
 
 monitor_settings = check_monitor()
@@ -101,10 +101,19 @@ if new_width != monitor_settings['width_cm'] or new_distance != monitor_settings
 
 csv_path = make_output_path(sub_info['sub_id'])
 
-win = make_window(monitor_settings, color='white')
+win = make_window(monitor_settings, color=config['window_color'])
 kb = keyboard.Keyboard()
 win.callOnFlip(kb.clearEvents)
 win.callOnFlip(kb.clock.reset)
 win.flip()
 win.flip()
-fr_det = kb.device.clock.getTime()
+fr_det = kb.clock.getTime()
+
+target_shape, trials = prepare_data()
+run_exercise(target_shape)
+for i, t_info in enumerate(trials):
+    is_correct, rt = trial(target_shape, t_info)
+    save_trial(csv_path, sub_info, i, target_shape, t_info, rt, is_correct)
+
+win.close()
+core.quit()
