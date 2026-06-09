@@ -14,4 +14,4 @@ stimuli_size: 2
 prime_time: 0.03
 isi_time: 0.045
 target_time: 0.09
-between_trail_time: 1.5
+between_trial_time: 1.5
