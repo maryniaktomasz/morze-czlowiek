@@ -3,8 +3,9 @@ window_color: 'white'
 left_key: 'a'
 right_key: 'd'
 
-number_of_exercises: 12
-number_of_trials: 360
+number_of_exercises: 5
+number_of_trials_per_block: 5
+number_of_blocks: 4
 
 stimuli_color: 'black'
 stimuli_x_offset: 3.3
