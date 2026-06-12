@@ -14,7 +14,7 @@ def prepare_data():
             (random.choice(('square', 'diamond')), random.choice(('square', 'diamond'))),
             random.choice((('square', 'diamond'), ('diamond', 'square')))
         )
-        for i in range(20)
+        for i in range(config['number_of_trials_per_block']*config['number_of_blocks'])
     )
     return target_shape, trials
 
@@ -61,10 +61,10 @@ def trial(target, trial_info, is_training=False):
         return False, pressed[-1].rt
 
 def run_exercise(target):
-    info = visual.TextStim(win, text='', color=config['stimuli_color'], height=config['stimuli_size']*3)
+    info = visual.TextStim(win, text='', color=config['stimuli_color'], height=config['stimuli_size']*1.5)
 
     for exercise in range(config['number_of_exercises']):
-        is_correct, _x = trial(target, (random.choice((-1,1)), (random.choice(('square','diamond')), random.choice(('square','diamond'))), random.choice((('square','diamond'), ('diamond', 'square')))), True)
+        is_correct, _ = trial(target, (random.choice((-1,1)), (random.choice(('square','diamond')), random.choice(('square','diamond'))), random.choice((('square','diamond'), ('diamond', 'square')))), True)
         info.setText({True: 'Dobrze', False: 'Źle'}[is_correct])
         info.draw()
         win.callOnFlip(kb.clearEvents)
@@ -111,9 +111,12 @@ fr_det = kb.clock.getTime()
 
 target_shape, trials = prepare_data()
 run_exercise(target_shape)
-for i, t_info in enumerate(trials):
-    is_correct, rt = trial(target_shape, t_info)
-    save_trial(csv_path, sub_info, i, target_shape, t_info, rt, is_correct)
+
+for j in range(config['number_of_blocks']):
+    for i, t_info in enumerate(trials[j*config['number_of_trials_per_block']:(j+1)*config['number_of_trials_per_block']]):
+        is_correct, rt = trial(target_shape, t_info)
+        save_trial(csv_path, sub_info, j*config['number_of_trials_per_block'] + i, target_shape, t_info, rt, is_correct)
+
 
 win.close()
 core.quit()
