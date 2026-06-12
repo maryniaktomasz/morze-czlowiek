@@ -17,10 +17,18 @@ def make_window(monitor_settings: dict | None = None, color: str = "white") -> v
 
     screen_w, screen_h = _get_screen_resolution()
 
+    # fix fix od mikołaja
     mon = monitors.Monitor(name="monitor")
-    mon.setWidth(monitor_settings["width_cm"])
-    mon.setDistance(monitor_settings["distance_cm"])
-    mon.setSizePix([screen_w, screen_h])
+    mon.currentCalib = {
+        'width': monitor_settings["width_cm"],
+        'distance': monitor_settings["distance_cm"],
+        'sizePix': [screen_w, screen_h],
+    }
+
+    # mon = monitors.Monitor(name="monitor")
+    # mon.setWidth(monitor_settings["width_cm"])
+    # mon.setDistance(monitor_settings["distance_cm"])
+    # mon.setSizePix([screen_w, screen_h])
 
     win = visual.Window(
         size=[screen_w, screen_h],
