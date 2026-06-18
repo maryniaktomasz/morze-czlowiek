@@ -16,3 +16,7 @@ prime_time: 0.03
 isi_time: 0.045
 target_time: 0.09
 between_trial_time: 1.5
+
+dynamic_fix_duration: 0.750
+dynamic_fix_side: 19.0
+dynamic_fix_dot_size: 0.2
