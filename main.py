@@ -1,8 +1,9 @@
 from psychopy import visual, gui, core
 from psychopy.hardware import keyboard
 import random
-from src.data_io import check_monitor, save_monitor_settings, make_output_path, save_trial, load_config
-from src.Fix import make_window, dynamic_fix
+import numpy as np
+from src.procedure_io import make_output_path, save_trial, load_config
+from src.monitor import make_window, save_monitor_settings, check_monitor
 
 config = load_config()
 
@@ -18,16 +19,50 @@ def prepare_data():
     )
     return target_shape, trials
 
+def dynamic_fix(win: visual.Window) -> None:
+
+    offset = config['dynamic_fix_side'] / 2.0
+
+    start_pos = np.array([
+        [-offset,  offset], # top-left
+        [ offset,  offset], # top-right
+        [-offset, -offset], # bottom-left
+        [ offset, -offset], # bottom-right
+    ])
+    end_pos = np.zeros((4, 2))
+
+    dots = visual.ElementArrayStim(
+        win,
+        nElements=4,
+        elementTex=None,
+        elementMask="circle",
+        sizes=config['dynamic_fix_dot_size'],
+        xys=start_pos,
+        colors=config['stimuli_color'],
+        units="deg",
+    )
+
+    clock = core.Clock()
+    clock.reset()
+    t = 0.0
+    while t < config['dynamic_fix_duration']:
+        t = clock.getTime()
+        frac = min(t / config['dynamic_fix_duration'], 1.0)
+        dots.xys = start_pos + (end_pos - start_pos) * frac
+        dots.draw()
+        win.flip()
+
+    win.flip()
+
 def draw_stimuli(size, position_x, position_y, shape):
     pos = {
         'left':  (-config['stimuli_x_offset'], config['stimuli_y_offset'] * position_y),
         'right': ( config['stimuli_x_offset'], config['stimuli_y_offset'] * position_y),
     }[position_x]
     ori = {'square': 0, 'diamond': 45}[shape]
-    out_rec  = visual.Rect(win, width=size,           height=size,           pos=pos, fillColor=config['stimuli_color'], ori=ori)
-    in_rec1  = visual.Rect(win, width=size * 0.8,     height=size * 0.8,     pos=pos, fillColor=config['window_color'],  ori=ori)
-    in_rec2  = visual.Rect(win, width=((size**2)/2)**(1/2), height=((size**2)/2)**(1/2),
-                           pos=pos, fillColor=config['window_color'], ori=ori + 45)
+    out_rec  = visual.Rect(win, width=size, height=size, pos=pos, fillColor=config['stimuli_color'], ori=ori)
+    in_rec1  = visual.Rect(win, width=size * 0.8, height=size * 0.8, pos=pos, fillColor=config['window_color'], ori=ori)
+    in_rec2  = visual.Rect(win, width=((size**2)/2)**(1/2), height=((size**2)/2)**(1/2), pos=pos, fillColor=config['window_color'], ori=ori + 45)
     out_rec.draw(); in_rec1.draw(); in_rec2.draw()
 
 def trial(target, trial_info, is_training=False):
@@ -50,8 +85,7 @@ def trial(target, trial_info, is_training=False):
     win.callOnFlip(kb.clearEvents)
     win.callOnFlip(kb.clock.reset)
     win.flip()
-    kb.waitKeys(maxWait=config['target_time'] - fr_det,
-                keyList=(config['left_key'], config['right_key']), clear=False)
+    kb.waitKeys(maxWait=config['target_time'] - fr_det, keyList=(config['left_key'], config['right_key']), clear=False)
     win.flip()
     kb.waitKeys(keyList=(config['left_key'], config['right_key']), clear=False)
     pressed = kb.getKeys()
@@ -73,6 +107,8 @@ def run_exercise(target):
         while kb.clock.getTime() < config['between_trial_time'] - fr_det:
             continue
 
+# --------- Eksperyment ---------
+
 monitor_settings = check_monitor()
 
 myDlg = gui.Dlg(title='')
@@ -93,7 +129,7 @@ sub_info = {
     'sub_age': gui_data[2],
 }
 
-new_width    = float(gui_data[3])
+new_width = float(gui_data[3])
 new_distance = float(gui_data[4])
 if new_width != monitor_settings['width_cm'] or new_distance != monitor_settings['distance_cm']:
     monitor_settings = {'width_cm': new_width, 'distance_cm': new_distance}
