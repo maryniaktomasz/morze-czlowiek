@@ -69,7 +69,7 @@ def draw_stimuli(size, position_x, position_y, shape):
     in_rec2  = visual.Rect(win, width=((size**2)/2)**(1/2), height=((size**2)/2)**(1/2), pos=pos, fillColor=config['window_color'], ori=ori + 45)
     out_rec.draw(); in_rec1.draw(); in_rec2.draw()
 
-# przeprowadza pojedyńczą próbę dla kształtu docelowego target ['square'/'diamond'], o danych z trail_info (jak z prepere_data())
+# przeprowadza pojedyńczą próbę dla kształtu docelowego target ['square'/'diamond'], o danych z trail_info (jak z prepere_data()) i nie wyświetla prymów gdy is_training jest True 
 def trial(target, trial_info, is_training=False):
     dynamic_fix(win)
     if not is_training:
