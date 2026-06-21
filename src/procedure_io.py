@@ -46,9 +46,11 @@ def save_trial(filepath, sub_info, trial_num, target_shape, trial_info, rt, is_c
     }
 
     filepath = Path(filepath)
+    #sprawdza istnienie przed otwarciem
     is_new = not filepath.exists()
     with open(filepath, 'a', newline='', encoding='utf-8') as f:
         writer = csv.DictWriter(f, fieldnames=list(row.keys()))
+        #Nagłówek tylko przy pierwszym trialu danego uczestnika
         if is_new:
             writer.writeheader()
         writer.writerow(row)
