@@ -8,7 +8,7 @@ number_of_trials_per_block: 90
 number_of_blocks: 4
 
 stimuli_color: 'black'
-stimuli_x_offset: 3.3 #ile od środka w poziomie
+stimuli_x_offset: 3.15 #ile od środka w poziomie
 stimuli_y_offset: 3 #ile od środka w pionie
 stimuli_size: 2
 stimuli_thicknes: 0.8 #0-1 im więcej tym chudszy
