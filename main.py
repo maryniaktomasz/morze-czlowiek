@@ -47,6 +47,7 @@ def dynamic_fix(win: visual.Window) -> None:
     clock = core.Clock()
     clock.reset()
     t = 0.0
+    # fr_det kompensuje opóźnienie vsync win.flip(), ostatnia klatka ląduje na duration
     while t < config['dynamic_fix_duration'] - fr_det:
         t = clock.getTime()
         frac = min(t / config['dynamic_fix_duration'], 1.0)
