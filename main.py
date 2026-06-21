@@ -3,10 +3,11 @@ from psychopy.hardware import keyboard
 import random
 import numpy as np
 from src.procedure_io import make_output_path, save_trial, load_config
-from src.monitor import make_window, save_monitor_settings, check_monitor
+from src.monitor import make_window, check_monitor, save_monitor_settings
 
 config = load_config()
 
+# losuje kształt docelowy i listę danych do pojedyńczych triali (wyświetlenie bodźca góra/dół, (lewy bodziec, prawy bodziec),  (lewy bodziec, prawy bodziec))
 def prepare_data():
     target_shape = random.choice(('square', 'diamond'))
     trials = list(
@@ -19,6 +20,7 @@ def prepare_data():
     )
     return target_shape, trials
 
+# rysuje i wyświetla dynamic fix
 def dynamic_fix(win: visual.Window) -> None:
 
     offset = config['dynamic_fix_side'] / 2.0
@@ -45,7 +47,7 @@ def dynamic_fix(win: visual.Window) -> None:
     clock = core.Clock()
     clock.reset()
     t = 0.0
-    while t < config['dynamic_fix_duration']:
+    while t < config['dynamic_fix_duration'] - fr_det:
         t = clock.getTime()
         frac = min(t / config['dynamic_fix_duration'], 1.0)
         dots.xys = start_pos + (end_pos - start_pos) * frac
@@ -54,10 +56,12 @@ def dynamic_fix(win: visual.Window) -> None:
 
     win.flip()
 
+# rysuje bodziec o rozmiarze size, po stronie position_x ['left'/'right'/'center'], na górze bądź dole position_y [1/-1], o kształcie shapie ['square'/'diamond']
 def draw_stimuli(size, position_x, position_y, shape):
     pos = {
         'left':  (-config['stimuli_x_offset'], config['stimuli_y_offset'] * position_y),
         'right': ( config['stimuli_x_offset'], config['stimuli_y_offset'] * position_y),
+        'center': ( 0, config['stimuli_y_offset'] * position_y)
     }[position_x]
     ori = {'square': 0, 'diamond': 45}[shape]
     out_rec  = visual.Rect(win, width=size, height=size, pos=pos, fillColor=config['stimuli_color'], ori=ori)
@@ -65,6 +69,7 @@ def draw_stimuli(size, position_x, position_y, shape):
     in_rec2  = visual.Rect(win, width=((size**2)/2)**(1/2), height=((size**2)/2)**(1/2), pos=pos, fillColor=config['window_color'], ori=ori + 45)
     out_rec.draw(); in_rec1.draw(); in_rec2.draw()
 
+# przeprowadza pojedyńczą próbę dla kształtu docelowego target ['square'/'diamond'], o danych z trail_info (jak z prepere_data())
 def trial(target, trial_info, is_training=False):
     dynamic_fix(win)
     if not is_training:
@@ -94,6 +99,7 @@ def trial(target, trial_info, is_training=False):
     else:
         return False, pressed[-1].rt
 
+# przeprowadza ćwiczenia dla kształtu docelowego target
 def run_exercise(target):
     info = visual.TextStim(win, text='', color=config['stimuli_color'], height=config['stimuli_size']*1.5)
 
@@ -111,6 +117,7 @@ def run_exercise(target):
 
 monitor_settings = check_monitor()
 
+# robi gui z informacjami o osobie badanej i monitorze
 myDlg = gui.Dlg(title='')
 myDlg.addText('Subject info:')
 myDlg.addField('sub_id',  '')
@@ -139,20 +146,47 @@ csv_path = make_output_path(sub_info['sub_id'])
 
 win = make_window(monitor_settings, color=config['window_color'])
 kb = keyboard.Keyboard()
+
+# wyliczenie czasu jednej klatki
 win.callOnFlip(kb.clearEvents)
 win.callOnFlip(kb.clock.reset)
 win.flip()
 win.flip()
 fr_det = kb.clock.getTime()
 
+# losowanie danych
 target_shape, trials = prepare_data()
+
+# instrukacja
+text = visual.TextStim(win, text='W trakcie zadania na ekranie będą pojawiały się figury geometryczne. Twoim zadaniem będzie wskazywanie, po której stronie znajduje się figura docelowa. Odpowiadaj możliwie szybko oraz dokładnie, Naciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
+text.draw()
+win.flip()
+kb.waitKeys(keyList='space', clear=True)
+text = visual.TextStim(win, text='Twoją figurą docelową jest:', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
+text.draw()
+draw_stimuli(config['stimuli_size'], 'center', -1, target_shape)
+win.flip()
+kb.waitKeys(keyList='space', clear=True)
+
+# ćwiczenie
 run_exercise(target_shape)
 
+# badanie właściwe
 for j in range(config['number_of_blocks']):
     for i, t_info in enumerate(trials[j*config['number_of_trials_per_block']:(j+1)*config['number_of_trials_per_block']]):
         is_correct, rt = trial(target_shape, t_info)
         save_trial(csv_path, sub_info, j*config['number_of_trials_per_block'] + i, target_shape, t_info, rt, is_correct)
 
+    if j + 1 < config['number_of_blocks']:
+        text = visual.TextStim(win, text='Możesz teraz odpocząć.\nNaciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
+        text.draw()
+        win.flip()
+        kb.waitKeys(keyList='space', clear=True)
+
+text = visual.TextStim(win, text='To koniec badania.\nNaciśnij SPACJĘ, aby zakończyć.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
+text.draw()
+win.flip()
+kb.waitKeys(keyList='space', clear=True)
 
 win.close()
 core.quit()
