@@ -103,7 +103,7 @@ def trial(target, trial_info, is_training=False):
 
 # przeprowadza ćwiczenia dla kształtu docelowego target
 def run_exercise(target):
-    info = visual.TextStim(win, text='', color=config['stimuli_color'], height=config['stimuli_size']*1.5, font=config['text_font')
+    info = visual.TextStim(win, text='', color=config['stimuli_color'], height=config['stimuli_size']*1.5, font=config['text_font'])
 
     for exercise in range(config['number_of_exercises']):
         is_correct, _ = trial(target, (random.choice((-1,1)), (random.choice(('square','diamond')), random.choice(('square','diamond'))), random.choice((('square','diamond'), ('diamond', 'square')))), True)
@@ -164,23 +164,23 @@ file_path = 'instruction.txt'
 with open(file_path, 'r', encoding='utf-8') as file:
     instruction = file.read()
 
-text = visual.TextStim(win, text = instruction + '\nNaciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font')
+text = visual.TextStim(win, text = instruction + '\nNaciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font'])
 text.draw()
 win.flip()
 kb.waitKeys(keyList='space', clear=True)
-text = visual.TextStim(win, text='Twoją figurą docelową jest:', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font')
+text = visual.TextStim(win, text='Twoją figurą docelową jest:', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font'])
 text.draw()
 draw_stimuli(config['stimuli_size'], 'center', -1, target_shape)
 win.flip()
 kb.waitKeys(keyList='space', clear=True)
 
 # ćwiczenie
-text = visual.TextStim(win, text='Naciśnij SPACJĘ, aby rozpocząć ćwiczenie.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font')
+text = visual.TextStim(win, text='Naciśnij SPACJĘ, aby rozpocząć ćwiczenie.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font'])
 text.draw()
 win.flip()
 kb.waitKeys(keyList='space', clear=True)
 run_exercise(target_shape)
-text = visual.TextStim(win, text='Ćwiczenie zakończone.\nNaciśnij SPACJĘ, aby rozpocząć właściwe badanie.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font')
+text = visual.TextStim(win, text='Ćwiczenie zakończone.\nNaciśnij SPACJĘ, aby rozpocząć właściwe badanie.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font'])
 text.draw()
 win.flip()
 kb.waitKeys(keyList='space', clear=True)
@@ -192,12 +192,12 @@ for j in range(config['number_of_blocks']):
         save_trial(csv_path, sub_info, j*config['number_of_trials_per_block'] + i, target_shape, t_info, rt, is_correct)
 
     if j + 1 < config['number_of_blocks']:
-        text = visual.TextStim(win, text='Możesz teraz odpocząć.\nNaciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font')
+        text = visual.TextStim(win, text='Możesz teraz odpocząć.\nNaciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font'])
         text.draw()
         win.flip()
         kb.waitKeys(keyList='space', clear=True)
 
-text = visual.TextStim(win, text='To koniec badania.\nNaciśnij SPACJĘ, aby zakończyć.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font')
+text = visual.TextStim(win, text='To koniec badania.\nNaciśnij SPACJĘ, aby zakończyć.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5, font=config['text_font'])
 text.draw()
 win.flip()
 kb.waitKeys(keyList='space', clear=True)
