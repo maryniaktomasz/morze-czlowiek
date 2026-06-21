@@ -161,7 +161,7 @@ target_shape, trials = prepare_data()
 
 # instrukacja
 file_path = 'instruction.txt'
-with open(file_path, 'r') as file:
+with open(file_path, 'r', encoding='utf-8') as file:
     instruction = file.read()
 
 text = visual.TextStim(win, text = instruction + '\nNaciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
