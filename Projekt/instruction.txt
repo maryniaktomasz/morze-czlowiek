@@ -1,1 +1,5 @@
-
+W badaniu będą się pojawiać dwie figury: kwadrat i diament, jedna po lewej, a druga po prawej stronie.
+Twoim zadaniem będzie wcisnąć odpowiedni przycisk do strony po której pojawi się twoja figura:
+A - jeżeli pojawi się po lewej stronie
+D - jeżeli pojawi się po prawej stronie
+Ważne jest żeby reagować zarówno szybko jak i poprawnie.
