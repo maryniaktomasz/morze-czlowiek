@@ -158,7 +158,11 @@ fr_det = kb.clock.getTime()
 target_shape, trials = prepare_data()
 
 # instrukacja
-text = visual.TextStim(win, text='W trakcie zadania na ekranie będą pojawiały się figury geometryczne. Twoim zadaniem będzie wskazywanie, po której stronie znajduje się figura docelowa. Odpowiadaj możliwie szybko oraz dokładnie, Naciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
+file_path = 'instruction.txt'
+with open(file_path, 'r') as file:
+    instruction = file.read()
+
+text = visual.TextStim(win, text = instruction + '\nNaciśnij SPACJĘ, aby kontynuować.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
 text.draw()
 win.flip()
 kb.waitKeys(keyList='space', clear=True)
