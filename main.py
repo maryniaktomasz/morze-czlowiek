@@ -50,6 +50,7 @@ def dynamic_fix(win: visual.Window) -> None:
     # fr_det kompensuje opóźnienie vsync win.flip(), ostatnia klatka ląduje na duration
     while t < config['dynamic_fix_duration'] - fr_det:
         t = clock.getTime()
+        # postęp animacji 0-1, 1.0 chroni przed przeskokiem jak t przekroczy duration
         frac = min(t / config['dynamic_fix_duration'], 1.0)
         dots.xys = start_pos + (end_pos - start_pos) * frac
         dots.draw()
