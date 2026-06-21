@@ -21,3 +21,5 @@ between_trial_time: 1.5
 dynamic_fix_duration: 0.750
 dynamic_fix_side: 19.0
 dynamic_fix_dot_size: 0.2
+
+text_font: 'Arial' #musi mieć polskie znaki
