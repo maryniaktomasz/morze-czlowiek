@@ -39,22 +39,24 @@ def make_window(monitor_settings: None, color: str = "white"):
 
 def _monitor_file_path():
     #JSON projektu, wywalony z psychopy3/monitors, żeby nie próbował go czytać.
-    #Centrum monitorów jest nieposłuszne
+    #Centrum monitorów jest nieposłuszne, więc korzystamy z bezpiecznej ścieżki
     base = Path(os.environ["APPDATA"])
     return base / "psychopy3" / "monitor.json"
 
 def load_monitor_settings():
-
+    #Jak nie ma pliku, odpali setup
     path = _monitor_file_path()
     if not path.exists():
         return None
     try:
+        #Zwraca tylko width_cm i distance_cm
         data = json.loads(path.read_text(encoding="utf-8"))
         return {
             "width_cm":    data.get("width_cm"),
             "distance_cm": data.get("distance_cm"),
         }
     except Exception:
+        #Plik uszkodzony/nieczytelny, jak brak
         return None
 
 def run_monitor_setup():
