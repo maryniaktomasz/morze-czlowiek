@@ -65,16 +65,16 @@ def draw_stimuli(size, position_x, position_y, shape):
     }[position_x]
     ori = {'square': 0, 'diamond': 45}[shape]
     out_rec  = visual.Rect(win, width=size, height=size, pos=pos, fillColor=config['stimuli_color'], ori=ori)
-    in_rec1  = visual.Rect(win, width=size * 0.8, height=size * 0.8, pos=pos, fillColor=config['window_color'], ori=ori)
+    in_rec1  = visual.Rect(win, width=size *config['stimuli_thicknes'], height=size *config['stimuli_thicknes'], pos=pos, fillColor=config['window_color'], ori=ori)
     in_rec2  = visual.Rect(win, width=((size**2)/2)**(1/2), height=((size**2)/2)**(1/2), pos=pos, fillColor=config['window_color'], ori=ori + 45)
     out_rec.draw(); in_rec1.draw(); in_rec2.draw()
 
-# przeprowadza pojedyńczą próbę dla kształtu docelowego target ['square'/'diamond'], o danych z trail_info (jak z prepere_data()) i nie wyświetla prymów gdy is_training jest True 
+# przeprowadza pojedyńczą próbę dla kształtu docelowego target ['square'/'diamond'], o danych z trail_info (jak z prepere_data()) i nie wyświetla prymów gdy is_training jest True
 def trial(target, trial_info, is_training=False):
     dynamic_fix(win)
     if not is_training:
-        draw_stimuli(config['stimuli_size'] * 0.8, 'left',  trial_info[0], trial_info[1][0])
-        draw_stimuli(config['stimuli_size'] * 0.8, 'right', trial_info[0], trial_info[1][1])
+        draw_stimuli(config['stimuli_size'] *config['stimuli_thicknes'], 'left',  trial_info[0], trial_info[1][0])
+        draw_stimuli(config['stimuli_size'] *config['stimuli_thicknes'], 'right', trial_info[0], trial_info[1][1])
         win.callOnFlip(kb.clearEvents)
         win.callOnFlip(kb.clock.reset)
         win.flip()
@@ -169,7 +169,15 @@ win.flip()
 kb.waitKeys(keyList='space', clear=True)
 
 # ćwiczenie
+text = visual.TextStim(win, text='Naciśnij SPACJĘ, aby rozpocząć ćwiczenie.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
+text.draw()
+win.flip()
+kb.waitKeys(keyList='space', clear=True)
 run_exercise(target_shape)
+text = visual.TextStim(win, text='Ćwiczenie zakończone.\nNaciśnij SPACJĘ, aby rozpocząć właściwe badanie.', color=config['stimuli_color'], height=config['stimuli_size'] * 0.5)
+text.draw()
+win.flip()
+kb.waitKeys(keyList='space', clear=True)
 
 # badanie właściwe
 for j in range(config['number_of_blocks']):
