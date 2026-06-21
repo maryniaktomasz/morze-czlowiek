@@ -92,10 +92,27 @@ def trial(target, trial_info, is_training=False):
     win.callOnFlip(kb.clearEvents)
     win.callOnFlip(kb.clock.reset)
     win.flip()
-    kb.waitKeys(maxWait=config['target_time'] - fr_det, keyList=(config['left_key'], config['right_key']), clear=False)
+    kb.waitKeys(maxWait=config['target_time'] - fr_det, keyList=(config['left_key'], config['right_key'], config['quit_key']), clear=False)
     win.flip()
-    kb.waitKeys(keyList=(config['left_key'], config['right_key']), clear=False)
+    kb.waitKeys(keyList=(config['left_key'], config['right_key'],config['quit_key']), clear=False)
     pressed = kb.getKeys()
+    if pressed[-1] == config['quit_key']: #wyjście z eksperymentu w trakcie trwania
+        kb.getKeys()
+        for i in range(5, -1, -1):
+            text = visual.TextStim(win, text=f'Naciśnij ponownie {config["quit_key"].upper()} w ciągu {i} sekund aby opóścić procedurę.', color=config['stimuli_color'],
+                                   height=config['stimuli_size'] * 0.5, font=config['text_font'])
+            text.draw()
+            win.flip()
+            kb.waitKeys(maxWait= 1, keyList=(config['quit_key']), clear=False)
+            pressed2 = kb.getKeys()
+            if len(pressed2) > 0 and pressed2[-1] == config['quit_key']:
+                win.close()
+                core.quit()
+        text = visual.TextStim(win,text=f'Naciśnij {config["left_key"].upper()} lub {config["right_key"].upper()} aby kontynuować.',color=config['stimuli_color'],height=config['stimuli_size'] * 0.5, font=config['text_font'])
+        text.draw()
+        win.flip()
+        kb.waitKeys(keyList=(config['left_key'], config['right_key']), clear=False)
+        pressed = kb.getKeys()
     if trial_info[2][{config['left_key']: 0, config['right_key']: 1}[pressed[-1].value]] == target:
         return True, pressed[-1].rt
     else:
