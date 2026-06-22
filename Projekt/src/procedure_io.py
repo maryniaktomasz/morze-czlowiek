@@ -8,7 +8,7 @@ def load_config(file_name='config.yaml'):
         config = yaml.safe_load(yaml_file)
     return config
 
-def make_output_path(sub_id: str, data_dir: str = "data") -> Path:
+def make_output_path(sub_id: str, data_dir: str = "data"):
     # Zrobi też folder data jak go nie ma
     out_dir = Path(data_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
