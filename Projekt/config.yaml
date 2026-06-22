@@ -2,7 +2,7 @@ window_color: 'white'
 
 left_key: 'a'
 right_key: 'd'
-quit_key: 'p' #aby opóścić procedurę w czasie na wskazanie strony figury wciśnij ten przycisk i postępuj zgodnie z instrukcjami
+quit_key: 'p' #aby opuścić procedurę w czasie na wskazanie strony figury wciśnij ten przycisk i postępuj zgodnie z instrukcjami
 
 number_of_exercises: 12
 number_of_trials_per_block: 90
