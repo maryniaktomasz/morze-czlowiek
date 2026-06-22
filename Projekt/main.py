@@ -99,7 +99,7 @@ def trial(target, trial_info, is_training=False):
     if pressed[-1] == config['quit_key']: #wyjście z eksperymentu w trakcie trwania
         kb.getKeys()
         for i in range(5, -1, -1):
-            text = visual.TextStim(win, text=f'Naciśnij ponownie {config["quit_key"].upper()} w ciągu {i} sekund aby opóścić procedurę.', color=config['stimuli_color'],
+            text = visual.TextStim(win, text=f'Naciśnij ponownie {config["quit_key"].upper()} w ciągu {i} sekund aby opuścić procedurę.', color=config['stimuli_color'],
                                    height=config['stimuli_size'] * 0.5, font=config['text_font'])
             text.draw()
             win.flip()
