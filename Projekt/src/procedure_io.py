@@ -37,7 +37,7 @@ def save_trial(filepath, sub_info, trial_num, target_shape, trial_info, rt, is_c
         'target_shape': target_shape,
         'position': 'up' if position == 1 else 'down',
         'prime_left': primes[0],
-        'prime_right':  primes[1],
+        'prime_right': primes[1],
         'td_left': target_distractor[0],
         'td_right': target_distractor[1],
         'trial_type': trial_type,
