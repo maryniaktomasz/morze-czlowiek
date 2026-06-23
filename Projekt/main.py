@@ -139,18 +139,18 @@ monitor_settings = check_monitor()
 # robi gui z informacjami o osobie badanej i monitorze
 myDlg = gui.Dlg(title='')
 myDlg.addText('Subject info:')
-myDlg.addField('sub_id',  '')
+myDlg.addField('sub_id', '')
 myDlg.addField('sub_sex', choices=['Male', 'Female', 'Other'])
 myDlg.addField('sub_age', 20)
 myDlg.addText('Monitor (confirm or adjust):')
-myDlg.addField('Screen width (cm):',     monitor_settings['width_cm'])
+myDlg.addField('Screen width (cm):', monitor_settings['width_cm'])
 myDlg.addField('Viewing distance (cm):', monitor_settings['distance_cm'])
 gui_data = myDlg.show()
 if not myDlg.OK:
     core.quit()
 
 sub_info = {
-    'sub_id':  gui_data[0],
+    'sub_id': gui_data[0],
     'sub_sex': gui_data[1],
     'sub_age': gui_data[2],
 }
