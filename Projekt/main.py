@@ -21,7 +21,7 @@ def prepare_data():
     return target_shape, trials
 
 # rysuje i wyświetla dynamic fix
-def dynamic_fix(win: visual.Window) -> None:
+def dynamic_fix(win: visual.Window):
 
     offset = config['dynamic_fix_side'] / 2.0
 
