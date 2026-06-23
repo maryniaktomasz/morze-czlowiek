@@ -52,7 +52,7 @@ def load_monitor_settings():
         #Zwraca tylko width_cm i distance_cm
         data = json.loads(path.read_text(encoding="utf-8"))
         return {
-            "width_cm":    data.get("width_cm"),
+            "width_cm": data.get("width_cm"),
             "distance_cm": data.get("distance_cm"),
         }
     except Exception:
